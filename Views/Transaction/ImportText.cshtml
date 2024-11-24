@@ -1,0 +1,16 @@
+@model string
+
+<h2>Import Transactions</h2>
+<form asp-action="ImportTextConfirmed" asp-controller="Transaction" method="post">
+    <textarea name="transactionData" rows="10" class="form-control"></textarea>
+    <button type="submit" class="btn btn-primary">Import</button>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">@TempData["Error"]</div>
+}

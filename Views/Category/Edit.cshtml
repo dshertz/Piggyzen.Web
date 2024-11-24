@@ -1,0 +1,36 @@
+@model Piggyzen.Web.Features.Category.Edit.Command
+
+@{
+    var categories = ViewBag.Categories as List<SelectListItem>;
+}
+
+<h2>Edit Category</h2>
+
+<form asp-controller="Category" asp-action="EditConfirmed" method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="form-label">Category Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ParentCategoryId" class="form-label">Parent Category</label>
+        <select asp-for="ParentCategoryId" class="form-select">
+            <option value="">-- None --</option>
+            @if (categories != null)
+            {
+                foreach (var category in categories)
+                {
+                    <option value="@category.Value"
+                        selected="@(category.Value == Model.ParentCategoryId?.ToString() ? "selected" : null)">
+                        @category.Text
+                    </option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

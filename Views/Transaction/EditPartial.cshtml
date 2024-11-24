@@ -1,0 +1,30 @@
+@model Piggyzen.Web.Features.Transaction.EditPartial.Model
+
+<h2>Edit Partial Transaction</h2>
+<form asp-action="EditPartialConfirmed" asp-controller="Transaction" method="post">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label for="transactionDate">Transaction Date</label>
+        <input id="transactionDate" name="TransactionDate" value="@Model.TransactionDate.ToString("yyyy-MM-dd")"
+            class="form-control" type="date" />
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input id="description" name="Description" value="@Model.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="amount">Amount</label>
+        <input id="amount" name="Amount" value="@Model.Amount" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select"></select>
+    </div>
+    <div class="form-group">
+        <label for="memo">Memo</label>
+        <textarea id="memo" name="Memo" class="form-control">@Model.Memo</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Partial</button>
+    <a asp-controller="Transaction" asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

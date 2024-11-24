@@ -1,0 +1,24 @@
+@model Piggyzen.Web.Features.Tag.Edit.Command
+
+<h2>Edit Tag</h2>
+
+<form asp-controller="Tag" asp-action="EditConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name" class="form-label">Tag Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Type" class="form-label">Tag Type</label>
+        <select asp-for="Type" class="form-select">
+            <option value="">-- Select Type --</option>
+            <option value="1" selected="@(Model.Type == 1)">Owner</option>
+            <option value="2" selected="@(Model.Type == 2)">Entity</option>
+            <option value="3" selected="@(Model.Type == 3)">Activity</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

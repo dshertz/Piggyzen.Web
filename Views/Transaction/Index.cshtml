@@ -1,0 +1,101 @@
+@model Piggyzen.Web.Features.Transaction.Index.Model
+
+<h2>Transactions</h2>
+
+<!-- Knapp för att skapa ny transaktion -->
+<form asp-controller="Transaction" asp-action="CreatePartial" method="get" class="d-inline-block mb-3">
+    <button type="submit" class="btn btn-success">Create New</button>
+</form>
+
+<!-- Knapp för att importera transaktioner -->
+<form asp-controller="Transaction" asp-action="Import-text" method="get" class="d-inline-block mb-3 ms-2">
+    <button type="submit" class="btn btn-secondary">Import</button>
+</form>
+
+<!-- Knapp för att kategorisera okategoriserade -->
+<form asp-asp-controller="Transaction" asp-action="CategorizeUncategorized" method="post"
+    class="d-inline-block mb-3 ms-2">
+    <button type="submit" class="btn btn-primary">Categorize Uncategorized</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Transaction Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Actions</th>
+            <th>Categorized</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var transaction in Model.Transactions)
+        {
+            <tr>
+                <td>@transaction.TransactionDate.ToString("yyyy-MM-dd")</td>
+                <td>@transaction.Description</td>
+                <td>@($"{transaction.Amount:F2} kr")</td>
+                <td>
+                    @if (string.IsNullOrWhiteSpace(transaction.CategoryName))
+                    {
+                        <span>&nbsp;</span> <!-- Visar blankt utrymme om det inte finns en kategori -->
+                    }
+                    else
+                    {
+                        @transaction.CategoryName
+                    }
+                </td>
+                <td>
+                    <a asp-controller="Transaction" asp-action="Categorize" asp-route-id="@transaction.Id"
+                        class="btn btn-primary btn-sm">
+                        Categorize
+                    </a>
+
+                    <a asp-controller="Transaction" asp-action="Details" asp-route-id="@transaction.Id"
+                        class="btn btn-info btn-sm">Details</a>
+                    <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@transaction.Id"
+                        class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-controller="Transaction" asp-action="Delete" asp-route-id="@transaction.Id"
+                        class="btn btn-danger btn-sm">Delete</a>
+
+                </td>
+                <td>
+                    @switch (transaction.CategorizationStatus)
+                    {
+                        case 0: // NotCategorized
+                            <span>&nbsp;</span> <!-- Tomt -->
+                            break;
+
+                        case 1: // AutoCategorized
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-robot fs-4 fw-bold text-success me-2" title="Automatically categorized"></i>
+                                <!-- Robot -->
+                                <form asp-controller="Transaction" asp-action="ApproveCategory" asp-route-id="@transaction.Id"
+                                    method="post" class="m-0">
+                                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                </form>
+                            </div>
+                            break;
+
+                        case 2: // ManuallyCategorized
+                            <i class="bi bi-person fs-4 fw-bold text-primary" title="Manually categorized"></i>
+                            <!-- Pennan -->
+                            break;
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Visar feedback -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}

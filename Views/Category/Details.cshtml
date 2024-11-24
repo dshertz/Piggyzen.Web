@@ -1,0 +1,32 @@
+@model Piggyzen.Web.Features.Category.Details.Model
+
+<h2>Category Details</h2>
+
+<div class="mb-3">
+    <h4>Name:</h4>
+    <p>@Model.Name</p>
+</div>
+
+<div class="mb-3">
+    <h4>Parent Category:</h4>
+    <p>@Model.ParentCategoryName</p>
+</div>
+
+<div class="mb-3">
+    <h4>Subcategories:</h4>
+    @if (Model.Subcategories.Any())
+    {
+            <ul>
+            @foreach (var subcategory in Model.Subcategories)
+            {
+                        <li>@subcategory.Name</li>
+            }
+            </ul>
+    }
+    else
+    {
+            <p>No subcategories.</p>
+    }
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

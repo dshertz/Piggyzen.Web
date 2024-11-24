@@ -1,0 +1,85 @@
+@using Microsoft.AspNetCore.Html
+@model Piggyzen.Web.Features.Transaction.Categorize.Command
+
+<h2>Select Category</h2>
+
+<!-- Sökruta -->
+<div class="form-group mb-3">
+    <label for="categorySearch">Search Categories</label>
+    <input type="text" id="categorySearch" class="form-control" placeholder="Search categories..."
+        oninput="filterCategories()">
+</div>
+
+<!-- Kategoriknappar -->
+<div id="categoryButtons">
+    @foreach (var category in Model.Categories)
+    {
+        @RenderCategory(category)
+    }
+</div>
+
+<!-- Hidden input för vald kategori -->
+<form asp-controller="Transaction" asp-action="CategorizeConfirmed" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="CategoryId" name="CategoryId" value="">
+    <button type="submit" class="btn btn-primary mt-3">Save</button>
+</form>
+
+@functions {
+    public IHtmlContent RenderCategory(Piggyzen.Web.Features.Transaction.Categorize.CategoryModel category)
+    {
+        var content = new HtmlContentBuilder();
+
+        if (category.Subcategories.Any())
+        {
+            content.AppendHtml($"<h4>{category.Name}</h4>");
+            content.AppendHtml("<div class='subcategory-group ml-3'>");
+
+            foreach (var subcategory in category.Subcategories)
+            {
+                content.AppendHtml(RenderCategory(subcategory));
+            }
+
+            content.AppendHtml("</div>");
+        }
+        else
+        {
+            var button = new TagBuilder("button");
+            button.AddCssClass("btn btn-outline-primary m-1 category-btn");
+            button.Attributes["type"] = "button";
+            button.Attributes["data-category-id"] = category.Id.ToString();
+            button.Attributes["onclick"] = "selectCategory(this)";
+            button.InnerHtml.Append(category.Id + " - " + category.Name);
+            content.AppendHtml(button);
+        }
+
+        return content;
+    }
+}
+
+@section Scripts {
+    <script>
+        function filterCategories() {
+            const searchValue = document.getElementById("categorySearch").value.toLowerCase();
+            const buttons = document.querySelectorAll(".category-btn");
+
+            buttons.forEach(button => {
+                const text = button.textContent.toLowerCase();
+                button.style.display = text.includes(searchValue) ? "block" : "none";
+            });
+        }
+
+        function selectCategory(button) {
+            const selectedCategoryId = button.getAttribute("data-category-id");
+            document.getElementById("CategoryId").value = selectedCategoryId;
+
+            // Highlight selected button
+            document.querySelectorAll(".category-btn").forEach(btn => {
+                btn.classList.remove("btn-primary");
+                btn.classList.add("btn-outline-primary");
+            });
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+        }
+    </script>
+}

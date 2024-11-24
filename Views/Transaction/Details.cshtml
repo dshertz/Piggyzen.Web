@@ -1,0 +1,62 @@
+@model Piggyzen.Web.Features.Transaction.Details.Model
+
+<h2>Transaction Details</h2>
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <th>ID</th>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.Description) ? "N/A" : Model.Description)</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>@($"{Model.Amount:F2} kr")</td>
+        </tr>
+        <tr>
+            <th>Balance</th>
+            <td>@(Model.Balance?.ToString("F2") + " kr" ?? "N/A")</td>
+        </tr>
+        <tr>
+            <th>Transaction Date</th>
+            <td>@Model.TransactionDate.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <th>Booking Date</th>
+            <td>@(Model.BookingDate?.ToShortDateString() ?? "N/A")</td>
+        </tr>
+        <tr>
+            <th>Category</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.CategoryName) ? "Uncategorized" : Model.CategoryName)</td>
+        </tr>
+        <tr>
+            <th>Parent Category</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.ParentCategoryName) ? "N/A" : Model.ParentCategoryName)</td>
+        </tr>
+        <tr>
+            <th>Memo</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.Memo) ? "No memo" : Model.Memo)</td>
+        </tr>
+        <tr>
+            <th>Transaction Type</th>
+            <td>@(Model.TransactionType == 0 ? "Partial" : "Complete")</td>
+        </tr>
+        <tr>
+            <th>Verification Status</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.VerificationStatusDisplay) ? "Unknown" :
+                    Model.VerificationStatusDisplay)</td>
+        </tr>
+        <tr>
+            <th>Categorization Status</th>
+            <td>@(string.IsNullOrWhiteSpace(Model.CategorizationStatusDisplay) ? "Unknown" :
+                    Model.CategorizationStatusDisplay)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="mt-3">
+    <a asp-controller="Transaction" asp-action="Index" class="btn btn-primary me-2">Back to List</a>
+    <a asp-controller="Transaction" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+</div>

@@ -1,0 +1,12 @@
+@model Piggyzen.Web.Features.Transaction.Delete.Command
+
+<h2>Delete Transaction</h2>
+
+<p>Are you sure you want to delete the transaction "<strong>@Model.Id</strong>"?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

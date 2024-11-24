@@ -1,0 +1,28 @@
+@model Piggyzen.Web.Features.Transaction.CreatePartial.Model
+
+<h2>Create Transaction</h2>
+<div class="btn-group mb-3" role="group">
+    <a asp-controller="Transaction" asp-action="CreatePartial" class="btn btn-primary">Create Partial</a>
+    <a asp-controller="Transaction" asp-action="CreateComplete" class="btn btn-secondary">Create Complete</a>
+</div>
+<form asp-controller="Transaction" asp-action="CreatePartial" method="post">
+    <div class="form-group">
+        <label asp-for="Command.TransactionDate">Transaction Date</label>
+        <input asp-for="Command.TransactionDate" class="form-control" type="date" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Command.Description">Description</label>
+        <input asp-for="Command.Description" class="form-control" type="text" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Command.Amount">Amount</label>
+        <input asp-for="Command.Amount" class="form-control" type="number" step="0.01" required />
+    </div>
+    <div class="form-group">
+        <label asp-for="Command.CategoryId">Category</label>
+        <select asp-for="Command.CategoryId" asp-items="Model.Categories" class="form-control">
+            <option value="">-- Select Category --</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Partial Transaction</button>
+</form>

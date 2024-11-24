@@ -1,0 +1,45 @@
+@model Piggyzen.Web.Features.Tag.Index.Model
+
+<h2>Tags</h2>
+
+<!-- Knapp för att skapa ny tag -->
+<form asp-controller="Tag" asp-action="Create" method="get" class="mb-3">
+    <button type="submit" class="btn btn-primary">Create New Tag</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tag in Model.Tags)
+        {
+            <tr>
+                <td>@tag.Name</td>
+                <td>@tag.Type</td>
+                <td>
+                    <a asp-controller="Tag" asp-action="Details" asp-route-id="@tag.Id"
+                        class="btn btn-info btn-sm">Details</a>
+                    <a asp-controller="Tag" asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-controller="Tag" asp-action="Delete" asp-route-id="@tag.Id"
+                        class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Visar feedback -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}

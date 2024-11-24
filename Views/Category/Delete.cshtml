@@ -1,0 +1,12 @@
+@model Piggyzen.Web.Features.Category.Delete.Command
+
+<h2>Delete Category</h2>
+
+<p>Are you sure you want to delete the category "<strong>@Model.Id</strong>"?</p>
+
+<form asp-controller="Category" asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken() <!-- Lägg till CSRF-skydd -->
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

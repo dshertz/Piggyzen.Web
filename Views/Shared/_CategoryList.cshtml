@@ -1,0 +1,17 @@
+@model IEnumerable<Piggyzen.Web.Features.Transaction.Categorize.CategoryModel>
+
+@foreach (var category in Model)
+{
+    <h4>@category.Name</h4>
+    @if (category.Subcategories.Any())
+    {
+        @await Html.PartialAsync("_CategoryList", category.Subcategories)
+    }
+    else
+    {
+        <button type="button" class="btn btn-outline-primary mb-2 category-btn" data-category-id="@category.Id"
+    onclick="selectCategory(this)">
+    @($"{category.Id} - {category.Name}")
+</button>
+    }
+}
